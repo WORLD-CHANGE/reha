@@ -8,6 +8,10 @@
 
     <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
     <title>모두의 재활</title>
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
@@ -15,82 +19,33 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
+    {% comment %} <script>
+        $.ajaxSetup({
+          headers: { "X-CSRFToken": '{{csrf_token}}' }
+        });
+      </script> {% endcomment %}
+
     <style>
-        .map_wrap, .map_wrap * {overflow-x:visible; margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:15px;z-index: 1}
-        .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
-        .map_wrap { position:relative;width:100%;height:600px;}
-        #menu_wrap {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:10px; overflow-y:auto; background:rgba(255, 255, 255, 0.8);z-index: 2;font-size:15px;border-radius: 10px;}
-        .bg_white {background:#fff;}
-        #menu_wrap hr {display: block; height: 1px;border: 0; border-top: 2px solid #101010;margin:3px 0; border-color: inherit; color:black;}
-        #menu_wrap .option{text-align: center;} 
-        #menu_wrap .option button {margin-left:5px;}
-        #placesList li { list-style: none;}
-        #placesList { cursor: pointer;min-height: 65px;}
-        #placesList span {display: block;margin-top:4px;}
-        #placesList h5, #placesList .info {text-overflow: ellipsis; white-space: normal;}
-        #placesList .info{ position:relative;padding:10px 0 10px 10px;}
-        #placesList .gray {color:#8a8a8a;}
-        #placesList .info .tel {color:#009900;}
-        #pagination {margin:10px auto;text-align: center;}
-        #pagination a {display:inline-block;margin-right:10px;}
-        #pagination .on {font-weight: bold; cursor: default;color:#777;}
-        .city:hover{color:#0080ff}
-
+        @media screen and (max-width: 604px) { #page_header { font-size:42px; } }
     </style>
-
   </head> 
 
   <body>
 
-    <!-- 모달 -->
-    <button type="button" style="display:none" class="btn btn-primary" id="modal" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
 
-    
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel"></h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div style="display:flex">
-                <div id="img">
-                
-                </div>
-                <div>
-                    <p id="address"></p>
-                    <p id="website"></p>
-                    <p id="phone"></p>
-                    <div style="margin-left: 7px;" id="modal-radio"></div>
-                </div>
-            </div>
-            <hr>
-            <h5><b>소개글</b></h5>
-             <p id="write"></p>
-
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
-        </div>
-        </div>
-    </div>
-    </div>
-
-
-    <div class="container">
+    <div class="container-fluid">
 
         {% comment %} 메뉴 {% endcomment %}
         <nav class="navbar">
-            <a href="" class="navbar-brand">
-                <div style="display: flex; height: 50px;">
-                
+            <a href="{% url 'main' %}" class="navbar-brand">
+                <div style="display: flex; height: 40px; margin-top:5px; margin-left:15px">
+                    <img  src="/static/logo.png">
+                    <img  src="/static/name.png">
                 </div>
             </a>
 
             <div>
-                <a href="admin" class="navbar-brand">
+                <a href="{% url 'main' %}" class="navbar-brand">
                     <i class="fa fa-home fa-lg" aria-hidden="true"></i>   
                 </a>
             </div>
@@ -98,14 +53,13 @@
 
 
         {% comment %} 로고 회사명 {% endcomment %}
-        <div style="display: flex; justify-content: center; height: 100px; margin-bottom: 45px; margin-top: 20px;" class="page-header">
-            <img style="object-fit: contain" src="/static/logo.png">
-            <img style="object-fit: contain" src="/static/name.png">
+
+        <div style="display: flex; justify-content: center; height: 94px; margin-bottom: 25px; margin-top: 45px;">
+            <img class="img-fluid" style="display: flex; justify-content: center;" src="/static/new_name.jpg">
         </div>
 
-
         {% comment %} 지역 카테고리창 {% endcomment %}
-        <div style="border: 2px solid #000; max-height: 195px;  overflow-y:auto; max-width: 700px" class="container">
+        <div style="border: 2px solid #000; max-height: 200px;  overflow-y:auto; max-width: 700px" class="container">
             <div class="row">
               <div class="col">
                 <div style="padding: 10px; width: 400px; display: flex;">
@@ -139,46 +93,20 @@
         </div>
 
 
-        {% comment %} 우리 근처의 재활센터 글귀 {% endcomment %}
-        <div style="display: flex; justify-content: center; height: 65px; margin-top: 80px; margin-left: 25px">
-        <img src="/static/title.png">
-        </div>
-
-        {% comment %} 전체 재활 가정방문 체크박스 {% endcomment %}
-        <div id ="check_box" style="margin-left: 15px; display:none;">
-        <input style="margin-left: 20px; margin-right: 10px;" type="radio" name="chk_info" value="HTML" checked><b>전체</b>
-        <input style="margin-right: 10px;" type="radio" name="chk_info" value="CSS"><b>센터</b>
-        <input style="margin-right: 10px;" type="radio" name="chk_info" value="웹디자인"><b>가정방문</b>
-        </div>
-
-        {% comment %} 지도 및 네비 {% endcomment %}
-        <div class="map_wrap">
-            <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden; margin-top: 20px;"></div>
-
-            <div id="menu_wrap" class="bg_white">
-                <div class="option">
-                    <div>
-                            <input type="text" value="" id="input2" placeholder="센터명 입력" size="15" onKeypress="javascript:if(event.keyCode==13) {button2 = document.getElementById('button2'); button2.click();}"> 
-                            <button type="button" id="button2" class="btn btn-primary">검색</button>
-                    </div>
-                </div>
-                <hr>
-                <ul id="placesList"></ul>
-                <div id="pagination"></div>
-            </div>
-        </div>
-
-        <p id="result"></p>
-
-        {% comment %} 소개글 두 개 {% endcomment %}
-        <div data-aos="fade-up" style="display: flex; justify-content: center; margin-top: 45px;">
-        <img style="display: flex; justify-content: center;" src="/static/warning.png">
+        {% comment %} 소개글 {% endcomment %}
+        <div data-aos="zoom-in" style="display: flex; justify-content: center; margin-top: 45px;">
+        <img class="img-fluid" style="display: flex; justify-content: center;" src="/static/소개글.png">
         </div>
 
         <div data-aos="fade-up" style="display: flex; justify-content: center; margin-top: 70px; margin-bottom: 30px">
-        <img style="display: flex; justify-content: center;" src="/static/text.png">
+        <img class="img-fluid" style="display: flex; justify-content: center;" src="/static/내용.jpg">
         </div>
-        
+
+        <div data-aos="fade-up" style="display: flex; justify-content: center; margin-top: 70px; margin-bottom: 30px">
+        <img class="img-fluid" style="display: flex; justify-content: center;" src="/static/내용2.jpg">
+        </div>
+     
+    </div>
 
         {% comment %} 푸터 {% endcomment %}
         <footer class="text-center text-white" style="background-color: #45637d;">
@@ -189,130 +117,39 @@
         </footer>
 
 
-        {% comment %} 지도 초기 설정 {% endcomment %}
-        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02a04e2ed99aa6a04210f2253925f429"></script>
-        <script>
-            var points = new kakao.maps.LatLng(37.65841359060776, 126.83195511980085);
-            var inforwindows = [];
-            var markers = [];
-
-            var container = document.getElementById('map');
-            var options = {
-                center: points,
-                level: 3
-            };
-    
-            var map = new kakao.maps.Map(container, options);
-
-            kakao.maps.event.addListener(map, 'rightclick', function(mouseEvent) {        
-    
-                var latlng = mouseEvent.latLng;
-                
-                var message = '<b>클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
-                message += '경도는 ' + latlng.getLng() + ' 입니다</b>';
-                
-                var resultDiv = document.getElementById('result'); 
-                resultDiv.innerHTML = message;
-                
-            });
-                 
-        </script>
-
-    </div>
-
-
     <script>
         //지역 검색
 
         $(document).ready(function () {
             $("#button1").click(function () {
                 var city_name = $("#input1").val();
+                var check = "";
+
+                if( city_name.length < 2){
+                alert('글자수가 적습니다. 검색은 두 글자 이상 가능합니다.');
+                return;
+                }
+
                 {% for 도 in 도_광역시 %}
-                if (city_name == '{{도.이름}}') {
-                    document.getElementById('{{도.이름}}').click();  
-                    return;  
-                }
-                {% endfor %}
-
-                {% for 지 in 지역 %}
-                if (city_name == '{{지.이름}}') {
-                    document.getElementById('{{지.도_광역시.이름}}').click();
-                    document.getElementById('{{지.이름}}').click();  
-                    return;  
-                }
-                {% endfor %}
-                alert('검색 결과가 없습니다. 띄어쓰기 공백 유의');
-
-            });     
-        });
-        
-
-        //재확센터 검색
-        $(document).ready(function () {
-            $("#button2").click(function () {
-                var city_name = $("#input2").val();
-                var pl = document.getElementById('placesList');
-                var fragment = document.createDocumentFragment();
-
-                {% for 재활 in 재활센터 %}
-                if (city_name == '{{재활.이름}}') {
-                    $('#placesList').html('');
-                    for(var i =0; i<inforwindows.length; i++){
-                        inforwindows[i].close(map, markers[i]);}
-        
-                    for(var i=0; i<markers.length; i++){
-                        markers[i].setMap(null);}
-                    
-                    
-                    var bounds = new kakao.maps.LatLngBounds();  
-                    var marker = new kakao.maps.Marker({});
-                    var iwContent = '<div style="padding:5px; width:150px; height:auto; display:inline-block;"><b>' + '{{ 재활.이름 }}' + '</b></div>';
-                    var el = document.createElement('li')
-                    list = '<div id="' + "{{재활.이름}}" + '" style="border-bottom:1px solid #888;" class="info"><h5><b>' + '{{ 재활.이름 }}' + '</b></h5><span class="gray">' + '{{ 재활.주소 }}' + '</span><span class="tel">전화번호 : ' + '{{ 재활.전화번호 }}'  + '</span></div>';
-                    el.innerHTML = list;
-                    fragment.appendChild(el);  
-                    
-                    // 네비에 검색 후 마우스 이벤트 등록
-                    el.onclick =  function () {
-                    $("#modal").click();
-                    $(".modal-title").html('<b>{{재활.이름}}</b>');
-                    $("#img").html('<img style="width:150px; height:150px; margin-right:15px; object-fit: contain;" src="/media/{{재활.사진}}">');
-                    $("#modal-radio").html('');
-                    $("#address").html("<b>주소 : </b>{{재활.주소}}");
-                    $("#website").html("<b>웹사이트 : </b>{{재활.웹사이트}}");
-                    $("#phone").html("<b>전화번호 : </b>{{재활.전화번호}}");
-
-                    if('{{재활.센터}}' == 'True')
-                    $("#modal-radio").html('<input style="margin-right: 10px;" type="radio" name="chk_info" value="CSS" checked><b>센터    </b>');
-                    if('{{재활.가정방문}}' == 'True')
-                    $("#modal-radio").append('<input style="margin-right: 10px;" type="radio" name="chk_info2" value="웹디자인" checked><b>가정방문</b>');
-                    
-                    $("#write").html('{{재활.정보}}');
-                    };
-
-                    points = new kakao.maps.LatLng('{{재활.위도}}', '{{재활.경도}}');
-                    marker = new kakao.maps.Marker({
-                        map: map,
-                        position: points,
-                        title : '{{재활.이름}}',
-                    });
-                    bounds.extend(points);
-                    var infowindow = new kakao.maps.InfoWindow({
-                        position : points, 
-                        content : iwContent 
-                    });
-                    inforwindows[0] = infowindow;
-                    inforwindows[0].open(map, marker);
-                    pl.appendChild(fragment);;
-                    map.setBounds(bounds);
+                check = '{{도.이름}}';
+                if (city_name.includes(check) || check.includes(city_name)) {
+                    document.getElementById(check).click();  
                     return;
                 }
                 {% endfor %}
 
+                {% for 지 in 지역 %}
+                check = '{{지.이름}}'
+                if (city_name.includes(check) || check.includes(city_name)) {
+                    location.href="{% url 'map' %}?" + check;
+                    return;  
+                }
+                {% endfor %}
                 alert('검색 결과가 없습니다. 띄어쓰기 공백 유의');
 
             });     
         });
+        
 
         //도시 클릭 후 지역 라디오버튼 활성화
         $(document).ready(function () {
@@ -359,117 +196,16 @@
         });
 
 
-        //지역 라디오 버튼 클릭 후 map 변경
+        //라디오 버튼 클릭 후 map 변경
         $(document).ready(function () {
             $('.geo').click(function (chk) {
-            $('#placesList').html('');
-            //$('#check_box').css('display','block');
-            var checkboxes = document.getElementsByClassName("form-check-input");
+
             var city_region = chk.target.id;   
-            for(var i=0; i<checkboxes.length; i++){
-                if(checkboxes[i].id != city_region){    
-                    checkboxes[i].checked = false;
-                }
-                else
-                { checkboxes[i].checked = true }
-            }
+ 
+            location.href="{% url 'map' %}?" + city_region;
 
-            for(var i =0; i<inforwindows.length; i++){
-                inforwindows[i].close(map, markers[i]);}
-
-            for(var i=0; i<markers.length; i++){
-                markers[i].setMap(null);}
-
-            var a = 0;
-            var bounds = new kakao.maps.LatLngBounds();  
-            var iwContent = '';
-            var list = '';
-            var infowindow = new kakao.maps.InfoWindow({ position : null, content : null });
-            var marker = new kakao.maps.Marker({});
-            var pl = document.getElementById('placesList');
-            var fragment = document.createDocumentFragment();
-            
-            {% for 재활 in 재활센터 %}
-                    if (city_region == '{{재활.지역.이름}}') {
-                        iwContent = '<div style="border-radius:6px; padding:5px; width:150px; height:auto; display:inline-block;"><b>' + '{{ 재활.이름 }}' + '</b></div>';
-                        var el = document.createElement('li')
-                        list = '<div id="' + "{{재활.이름}}" + '" style="border-bottom:1px solid #888;" class="info"><h5><b>' + '{{ 재활.이름 }}' + '</b></h5><span class="gray">' + '{{ 재활.주소 }}' + '</span><span class="tel">전화번호 : ' + '{{ 재활.전화번호 }}'  + '</span></div>';
-                        el.innerHTML = list;
-                        fragment.appendChild(el);
-                        points = new kakao.maps.LatLng('{{재활.위도}}', '{{재활.경도}}');
-                        marker = new kakao.maps.Marker({
-                            map: map,
-                            position: points,
-                            title : '{{재활.이름}}',
-                        });
-
-
-                        // 마커에 마우스 이벤트 등록
-                        kakao.maps.event.addListener(marker, 'click', function() {
-                        $("#modal").click();
-                        $("#modal-radio").html('');
-                        $(".modal-title").html('<b>{{재활.이름}}</b>');
-                        $("#img").html('<img style="width:150px; height:150px; margin-right:15px; object-fit: contain;" src="/media/{{재활.사진}}">');
-                        $("#address").html("<b>주소 : </b>{{재활.주소}}");
-                        $("#website").html("<b>웹사이트 : </b>{{재활.웹사이트}}");
-                        $("#phone").html("<b>전화번호 : </b>{{재활.전화번호}}");
-
-                        if('{{재활.센터}}' == 'True'){
-                        $("#modal-radio").html('<input style="margin-right: 10px;" type="radio" name="chk_info" value="CSS" checked><b>센터    </b>');}
-                        if('{{재활.가정방문}}' == 'True'){
-                        $("#modal-radio").append('<input style="margin-right: 10px;" type="radio" name="chk_info2" value="웹디자인" checked><b>가정방문</b>');}
-                       
-                        $("#write").html('{{재활.정보}}');
-                        
-                    
-                    });
-                    
-                        // 네비에 마우스 이벤트 등록
-                        el.onclick =  function () {
-                        $("#modal").click();
-                        $("#modal-radio").html('');
-                        $(".modal-title").html('<b>{{재활.이름}}</b>');
-                        $("#img").html('<img style="width:150px; height:150px; margin-right:15px; object-fit: contain;" src="/media/{{재활.사진}}">');
-                        $("#address").html("<b>주소 : </b>{{재활.주소}}");
-                        $("#website").html("<b>웹사이트 : </b>{{재활.웹사이트}}");
-                        $("#phone").html("<b>전화번호 : </b>{{재활.전화번호}}");
-
-                        if('{{재활.센터}}' == 'True'){
-                        $("#modal-radio").html('<input style="margin-right: 10px;" type="radio" name="chk_info" value="CSS" checked><b>센터    </b>');}
-                        if('{{재활.가정방문}}' == 'True'){
-                        $("#modal-radio").append('<input style="margin-right: 10px;" type="radio" name="chk_info2" value="웹디자인" checked><b>가정방문</b>');}
-
-                        $("#write").html('{{재활.정보}}');
-
-                        };
-
-
-                        markers[a] = marker;
-                        bounds.extend(points);
-                        infowindow = new kakao.maps.InfoWindow({
-                            position : points, 
-                            content : iwContent 
-                        });
-                        inforwindows[a] = infowindow;
-                        a++;
-                        
-                    }
-
-            {% endfor %}
-
-            
-
-            if(a == 0)
-            return;
-
-            for(var i =0; i<inforwindows.length; i++){
-                inforwindows[i].open(map, markers[i]);}
-
-            pl.appendChild(fragment);;
-            map.setBounds(bounds);
             });     
         });
-
 
     </script>
 
